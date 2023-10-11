@@ -24,21 +24,31 @@ const getContact = asyncHandler(async(req,res)=>{
 //@desc post contacts
 //@route /api/contacts
 //@access private
-const postContacts = asyncHandler(async(req,res)=>{
-    console.log("body request is :", req.body);
-    const {name,email,phone} = req.body;
-    if(!name || !email || !phone){
-        res.status(404);
-        throw new Error("all fields are mandatory !");
+const postContacts = asyncHandler(async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
+    if (!name || !email || !phone) {
+      res.status(400).json({ error: "All fields are mandatory!" });
+      return;
+    }
+    const duplicate = await Contact.find({phone: req.body.phone}) ;
+    if(duplicate.length>0){
+      M.toast({ html: "Contact with this phone number already exists", classes: "#f44336 red" });
+      res.status(403).json({ message: "Contact with this phone number already exists" });
+      return;
     }
     const contact = await Contact.create({
       name,
       email,
       phone,
-      user_id : req.user.id
+      user_id: req.user.id,
     });
-    res.status(200).json(contact);
-})
+    res.status(201).json(contact); 
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 //@desc update contact
 //@route /api/contacts/:id
@@ -76,8 +86,8 @@ const deleteContacts = asyncHandler(async (req, res) => {
         res.status(403);
         throw new Error ("Unauthorized User is can't delete a contact");
       }
-      await Contact.deleteOne({ _id: id }); 
-      res.status(200).json({ message: "Contact deleted successfully" });
+       await Contact.deleteOne({ _id: id }); 
+       res.status(200).json({message: "Contact deleted successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

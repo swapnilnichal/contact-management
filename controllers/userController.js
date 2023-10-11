@@ -28,7 +28,8 @@ const registerUser = asyncHandler(async(req,res)=>{
           });
         //   console.log("User created :", user);
           if(user){
-            res.status(201).json({_id: user.id,username: user.username, email: user.email})
+            res.status(201).json({message : "User registered successfully",_id: user.id,
+            username: user.username, email: user.email})
           }
           else{
             res.status(400);
@@ -36,12 +37,12 @@ const registerUser = asyncHandler(async(req,res)=>{
           }
     }catch(err){
         console.log(err);
-        res.status(500).json({ error: "Server error" });
+        res.status(500).json({ error: "server error" });
     }   
 })
 
-//@desc register user 
-//@route /api/users/register
+//@desc login user 
+//@route /api/users/login
 //@access public
 const loginUser = asyncHandler(async(req,res)=>{
     const {email,password} = req.body;
@@ -58,7 +59,7 @@ const loginUser = asyncHandler(async(req,res)=>{
           id : user.id,  
         }
       },process.env.ACCESS_TOKEN_SECRETE,
-      {expiresIn: "15m"}
+      {expiresIn: "45m"}
       );
       res.status(200).json({accessToken});
     }
@@ -68,8 +69,8 @@ const loginUser = asyncHandler(async(req,res)=>{
     }
 })
 
-//@desc register user 
-//@route /api/users/register
+//@desc current user 
+//@route /api/users/current
 //@access public
 const currentUser = asyncHandler(async(req,res)=>{
     res.json(req.user);

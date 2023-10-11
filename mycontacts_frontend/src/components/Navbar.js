@@ -1,14 +1,46 @@
+import { useEffect, useState } from 'react';
+import { Link , useNavigate} from 'react-router-dom';
 
 function Navbar() {
+  let navigate = useNavigate();
+  const [isLogIn,setIsLogIn] = useState(false);
+
+  let token = localStorage.getItem('accessToken');
+  useEffect(()=>{
+    if(token){
+      setIsLogIn(true);
+    }
+  },[isLogIn])
+
+  function logout(){
+    if(token){
+      localStorage.removeItem('accessToken');
+      navigate('/login');
+    }
+  }
+ 
     return (
       <div className="Nav">
         <nav>
-          <div class="nav-wrapper">
-            <a href="#" class="brand-logo">Contact Manager</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-              <li><a href="sass.html">Add Contact</a></li>
-              <li><a href="badges.html">update </a></li>
-              <li><a href="collapsible.html">remove</a></li>
+          <div className="nav-wrapper">
+            <Link to="/" className="brand-logo" style={{left: "10px"}}>Contact Manager</Link>
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+              {
+                isLogIn ? 
+                <>
+                   <li><Link to="/">Add Contact</Link></li>
+                   <li><Link to="/">update </Link></li>
+                   <li><Link to="/">remove</Link></li>
+                   <li> <button className="btn waves-effect waves-light left" type="submit" onClick={logout} style={{margin:"15px 10px"}} name="action">
+                               Log out
+                           </button>
+                   </li> 
+                </>      : 
+                <>
+                   <li> <Link to="/signup">Sign Up</Link></li>
+                   <li><Link to="/login">Log In </Link></li> 
+                </>
+              }      
             </ul>
           </div>
         </nav>
