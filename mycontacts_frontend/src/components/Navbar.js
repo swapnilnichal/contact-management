@@ -28,9 +28,7 @@ function Navbar() {
               {
                 isLogIn ? 
                 <>
-                   <li><Link to="/">Add Contact</Link></li>
-                   <li><Link to="/">update </Link></li>
-                   <li><Link to="/">remove</Link></li>
+                   <li><Link to="/search">Search Contacts</Link></li>
                    <li> <button className="btn waves-effect waves-light left" type="submit" onClick={logout} style={{margin:"15px 10px"}} name="action">
                                Log out
                            </button>

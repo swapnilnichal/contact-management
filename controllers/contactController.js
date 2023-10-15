@@ -49,6 +49,29 @@ const postContacts = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc get contacts
+//@route /api/contacts/search
+//@access private
+const searchContacts = asyncHandler(async (req, res) => {
+  const query = req.query.query; 
+  try {
+    const matchingContacts = await Contact.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } }, // Case-insensitive name match
+        { email: { $regex: query, $options: 'i' } }, // Case-insensitive email match
+        { phone: { $regex: query, $options: 'i' } }, // Case-insensitive phone match
+      ],
+    });
+    if (matchingContacts.length === 0) {
+      return res.status(404).json({ message: 'No contacts found' });
+    }
+    res.status(200).json(matchingContacts);
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error' });
+    console.log(err);
+  }
+});
+
 
 //@desc update contact
 //@route /api/contacts/:id
@@ -94,4 +117,4 @@ const deleteContacts = asyncHandler(async (req, res) => {
   });
   
 
-module.exports = {getContacts,getContact,postContacts,updateContacts,deleteContacts};
+module.exports = {getContacts,getContact,postContacts,updateContacts,deleteContacts,searchContacts};

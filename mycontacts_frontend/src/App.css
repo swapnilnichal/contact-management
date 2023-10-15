@@ -28,6 +28,49 @@
   color: #61dafb;
 }
 
+.search{
+  display: inline-block !important;
+  position: relative !important;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+.search input[type="text"] {
+  width: 200px !important;
+  height: 17px !important;
+  padding: 10px !important;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search button[type="submit"] {
+  background-color: #4e99e9;
+  border: none !important;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute !important;
+  top: 0!important;
+  right: 0 !important;
+  transition: .9s ease;
+}
+
+.search button[type="submit"]:hover {
+  transform: scale(1.1);
+  color: rgb(255, 255, 255);
+  background-color: blue;
+}
+
+#contactList {
+  background-color: #b681e7b0;
+    color: white;
+    font-weight: 600;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

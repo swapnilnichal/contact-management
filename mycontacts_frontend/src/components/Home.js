@@ -35,42 +35,42 @@ const Home = () => {
 
     async function addContact(e) {
         e.preventDefault();
-        if(correctInfo(userName,email,phone) === false) {
-            return ;
+        if (correctInfo(userName, email, phone) === false) {
+            return;
         }
-        else{
-        try {
-            const token = localStorage.getItem('accessToken');
-            const response = await fetch('/api/contacts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    name: userName,
-                    email,
-                    phone,
-                }),
-            });
+        else {
+            try {
+                const token = localStorage.getItem('accessToken');
+                const response = await fetch('/api/contacts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        name: userName,
+                        email,
+                        phone,
+                    }),
+                });
 
-            if (!response.ok) {
-                M.toast({ html: "contact with this phone number is already exists", classes: "#f44336 red" });
-                throw new Error('Network response was not ok');
-            } else {
-                const data = await response.json();
-                // console.log(data);
-                setContacts((prevContacts) => [...prevContacts, data]);
-                M.toast({ html: 'Contact added successfully', classes: "#00e676 green accent-3" });
-                document.getElementById('contactForm').reset();
-                setUserName("");
-                setEmail("");
-                setPhone("");
+                if (!response.ok) {
+                    M.toast({ html: "contact with this phone number is already exists", classes: "#f44336 red" });
+                    throw new Error('Network response was not ok');
+                } else {
+                    const data = await response.json();
+                    // console.log(data);
+                    setContacts((prevContacts) => [...prevContacts, data]);
+                    M.toast({ html: 'Contact added successfully', classes: "#00e676 green accent-3" });
+                    document.getElementById('contactForm').reset();
+                    setUserName("");
+                    setEmail("");
+                    setPhone("");
+                }
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
         }
-    }
     }
 
     const deleteContact = async (contactId) => {
@@ -128,38 +128,38 @@ const Home = () => {
             phone: phoneInputRef.current.value
         };
 
-        if(correctInfo(updatedData.name,updatedData.email,updatedData.phone) === false) {
-            return ;
+        if (correctInfo(updatedData.name, updatedData.email, updatedData.phone) === false) {
+            return;
         }
-        else{
-        try {
-            const response = await fetch("/api/contacts/" + conId, {
-                method: 'PUt',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    name: updatedData.name,
-                    email: updatedData.email,
-                    phone: updatedData.phone
-                })
-            });
-            if (!response.ok) {
-                console.log("not ok");
-            } else {
-                const updatedData = await response.json();
-                setContacts((prevContacts) => {
-                    return prevContacts.map((c) =>
-                        c._id === updatedData._id ? updatedData : c
-                    );
+        else {
+            try {
+                const response = await fetch("/api/contacts/" + conId, {
+                    method: 'PUt',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        name: updatedData.name,
+                        email: updatedData.email,
+                        phone: updatedData.phone
+                    })
                 });
-                console.log(updatedData);
+                if (!response.ok) {
+                    console.log("not ok");
+                } else {
+                    const updatedData = await response.json();
+                    setContacts((prevContacts) => {
+                        return prevContacts.map((c) =>
+                            c._id === updatedData._id ? updatedData : c
+                        );
+                    });
+                    console.log(updatedData);
+                }
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
         }
-    }
     }
 
     useEffect(() => {
@@ -262,7 +262,7 @@ const Home = () => {
                     </div>
                 </form>
                 <div className="col s12 m5">
-                    <h1>Your Contacts</h1>
+                    <h3>Contact List</h3>
                     <ul className="collection">
                         {contacts && contacts.map(contact => (
                             <li className="collection-item avatar" key={contact._id}>

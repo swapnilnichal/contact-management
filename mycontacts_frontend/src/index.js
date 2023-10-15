@@ -7,16 +7,17 @@ import Home from './components/Home';
 import Signup from './components/SignUp';
 import reportWebVitals from './reportWebVitals';
 import Login from './components/LogIn';
+import Search from './components/SearchContacts';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
     <Routes>
-      {/* <Route path="/" element={<App />} /> */}
       <Route exact path="/" element={<Home />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/search" element={<Search />} />
     </Routes>
     </BrowserRouter>
   </React.StrictMode>
