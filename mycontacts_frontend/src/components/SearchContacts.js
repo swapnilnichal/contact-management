@@ -1,26 +1,57 @@
-import { React, useState } from "react";
+import { React, useState,useEffect } from "react";
+import M from 'materialize-css';
 import Navbar from "./Navbar";
 
 const Search = () => {
+  const [contacts, setContacts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchData, setSearchData] = useState([]);
+  const [searchData,setSearchData] = useState([]);
 
-  const searchContacts = async (search) => {
+
+  useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    try {
-      const response = await fetch(`/api/contacts/search?query=${search}`, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-      let data = await response.json();
-      console.log("data : ", data);
-      setSearchData(data);
-    } catch (err) {
-      console.log(err);
+    const fetchData = async () => {
+        try {
+            if (!token) {
+                console.error('Token not found. User may not be authenticated.');
+                return;
+            }
+
+            const response = await fetch('/api/contacts', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+            setContacts(data);
+            console.log("data is data",data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    fetchData(); // Call the function to fetch contacts when the component mounts
+}, []);
+
+  const searchContacts = async (searchTerm) => {
+    const regex = new RegExp(searchTerm, 'i');
+    const results = contacts.filter((contact) => {
+      return (
+        regex.test(contact.name) || 
+        regex.test(contact.email) || 
+        regex.test(contact.phone)
+      );
+    });
+    // console.log(results);
+    if(results.length === 0){
+      setSearchData(results)
+      M.toast({ html: "No records found", classes: "#f44336 red" });
+      return false;
     }
+    setSearchData(results)
   }
 
   return (

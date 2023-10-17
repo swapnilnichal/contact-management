@@ -170,7 +170,7 @@ const Home = () => {
                     console.error('Token not found. User may not be authenticated.');
                     return;
                 }
-
+    
                 const response = await fetch('/api/contacts', {
                     method: 'GET',
                     headers: {
@@ -181,7 +181,7 @@ const Home = () => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
+    
                 const data = await response.json();
                 setContacts(data);
                 console.log(data);
@@ -189,15 +189,14 @@ const Home = () => {
                 console.error(err);
             }
         };
-
+    
         fetchData(); // Call the function to fetch contacts when the component mounts
     }, []);
 
 
-
     return (
         <>
-            <Navbar />
+            <Navbar contacts={contacts}/>
             {/* start :this section is for modal  */}
             <div id="modal1" className="modal">
                 <div className="modal-content">
