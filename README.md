@@ -2,6 +2,7 @@
 this is an contact management system 
 
 TechStack :  MERN 
+
 functionalities :  
 1) user Registration
 2) user login
